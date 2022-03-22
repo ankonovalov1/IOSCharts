@@ -157,7 +157,7 @@ open class CandleStickChartRenderer: LineScatterCandleRadarRenderer
                 _bodyRect.size.height = CGFloat(open * phaseY) - _bodyRect.origin.y
                 
                 trans.rectValueToPixel(&_bodyRect)
-                
+                let roundingPath = UIBezierPath(roundedRect: _bodyRect, cornerRadius: 12)
                 // draw body differently for increasing and decreasing entry
 
                 if open > close
@@ -169,12 +169,14 @@ open class CandleStickChartRenderer: LineScatterCandleRadarRenderer
                     if dataSet.isDecreasingFilled
                     {
                         context.setFillColor(color.cgColor)
-                        context.fill(_bodyRect)
+                        context.addPath(roundingPath.cgPath)
+                        context.drawPath(using: .fill)
                     }
                     else
                     {
                         context.setStrokeColor(color.cgColor)
-                        context.stroke(_bodyRect)
+                        context.addPath(roundingPath.cgPath)
+                        context.drawPath(using: .stroke)
                     }
                 }
                 else if open < close
@@ -186,12 +188,14 @@ open class CandleStickChartRenderer: LineScatterCandleRadarRenderer
                     if dataSet.isIncreasingFilled
                     {
                         context.setFillColor(color.cgColor)
-                        context.fill(_bodyRect)
+                        context.addPath(roundingPath.cgPath)
+                        context.drawPath(using: .fill)
                     }
                     else
                     {
                         context.setStrokeColor(color.cgColor)
-                        context.stroke(_bodyRect)
+                        context.addPath(roundingPath.cgPath)
+                        context.drawPath(using: .stroke)
                     }
                 }
                 else
@@ -199,7 +203,8 @@ open class CandleStickChartRenderer: LineScatterCandleRadarRenderer
                     let color = dataSet.neutralColor ?? dataSet.color(atIndex: j)
                     
                     context.setStrokeColor(color.cgColor)
-                    context.stroke(_bodyRect)
+                    context.addPath(roundingPath.cgPath)
+                    context.drawPath(using: .stroke)
                 }
             }
             else
